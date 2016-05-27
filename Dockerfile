@@ -1,11 +1,19 @@
 FROM microsoft/dotnet:1.0.0-preview1
 
-RUN printf "deb http://ftp.us.debian.org/debian jessie main\n" >> /etc/apt/sources.list
-RUN apt-get -qq update && apt-get install -qqy sqlite3 libsqlite3-dev && rm -rf /var/lib/apt/lists/*
+# We need node for server-side rendering
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash
+RUN apt-get install -qqy nodejs
 
+# Copy the app
 COPY . /app
 WORKDIR /app
+
+# Configure the listening port to 5000
+ENV ASPNETCORE_URLS http://*:5000
+EXPOSE 5000
+
+# Restore packages
 RUN ["dotnet", "restore"]
 
-EXPOSE 5000/tcp
+# Run it!
 ENTRYPOINT ["dotnet", "run"]
