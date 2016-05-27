@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Serialization;
 
 namespace SpaTest
 {
+    using Microsoft.Extensions.Configuration;
+
     public class Startup
     {
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -56,6 +59,7 @@ namespace SpaTest
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseKestrel()
+                .UseUrls("http://*:5000")
                 .UseStartup<Startup>()
                 .Build();
 
